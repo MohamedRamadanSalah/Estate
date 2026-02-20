@@ -2,7 +2,11 @@ import { notFound } from 'next/navigation';
 import { cache } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import MobileTabBar from '@/components/layout/MobileTabBar';
 import PropertyDetail from '@/components/property/PropertyDetail';
+import ScrollProgress from '@/components/ui/ScrollProgress';
+import CustomCursor from '@/components/ui/CustomCursor';
+import ToastProvider from '@/components/ui/ToastProvider';
 import { prisma } from '@/lib/prisma';
 
 const getProperty = cache(async (unitCode: string) => {
@@ -28,12 +32,16 @@ export default async function PropertyPage({ params }: { params: Promise<{ unitC
   if (!property) notFound();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-cream">
+      <ScrollProgress />
+      <CustomCursor />
+      <ToastProvider />
       <Navbar />
-      <main className="flex-1 py-8">
+      <main className="flex-1 pt-24 pb-8">
         <PropertyDetail property={property} />
       </main>
       <Footer />
+      <MobileTabBar />
     </div>
   );
 }

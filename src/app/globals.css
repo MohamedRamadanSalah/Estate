@@ -1,4 +1,8 @@
 @import 'leaflet/dist/leaflet.css';
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/effect-fade';
 
 @tailwind base;
 @tailwind components;
@@ -13,6 +17,10 @@
   body {
     @apply font-cairo;
   }
+
+  ::selection {
+    @apply bg-gold/30 text-navy;
+  }
 }
 
 /* RTL support */
@@ -22,12 +30,12 @@
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0A0F1E;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -37,4 +45,250 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #B87333;
+}
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #C9A84C, #B87333);
+  transform-origin: left;
+  z-index: 9999;
+}
+
+/* Custom cursor */
+.custom-cursor {
+  pointer-events: none;
+  position: fixed;
+  z-index: 99999;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: #C9A84C;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s;
+}
+
+.custom-cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid #C9A84C;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+.custom-cursor-dot.hovering {
+  width: 14px;
+  height: 14px;
+}
+
+.custom-cursor-ring.hovering {
+  width: 50px;
+  height: 50px;
+  border-color: #B87333;
+}
+
+/* Gold shimmer button */
+.btn-gold-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #C9A84C, #B87333, #C9A84C);
+  background-size: 200% 200%;
+  transition: all 0.3s ease;
+}
+
+.btn-gold-shimmer:hover {
+  animation: shimmer 1.5s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.3);
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Magnetic hover effect */
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+/* Card 3D tilt */
+.card-tilt {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-tilt-inner {
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+}
+
+/* Floating animation */
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Ken Burns */
+.ken-burns {
+  animation: kenBurns 20s ease-out forwards;
+}
+
+@keyframes kenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+/* Skeleton loader */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #E5E7EB;
+  border-radius: 8px;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Staggered children animation */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stagger-children.animate > * {
+  animation: slideUp 0.5s ease forwards;
+}
+
+.stagger-children.animate > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children.animate > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-children.animate > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-children.animate > *:nth-child(4) { animation-delay: 300ms; }
+.stagger-children.animate > *:nth-child(5) { animation-delay: 400ms; }
+.stagger-children.animate > *:nth-child(6) { animation-delay: 500ms; }
+
+@keyframes slideUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Lightbox overlay */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toast */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+/* Underline draw on hover */
+.underline-draw {
+  position: relative;
+}
+
+.underline-draw::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background: #C9A84C;
+  transition: width 0.3s ease;
+}
+
+.underline-draw:hover::after {
+  width: 100%;
+}
+
+/* Hide scrollbar for mobile horizontal scroll */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Swiper customization */
+.swiper-pagination-bullet {
+  background: #C9A84C !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #C9A84C !important;
+}
+
+/* Input floating label */
+.floating-label-group {
+  position: relative;
+}
+
+.floating-label-group input:focus + label,
+.floating-label-group input:not(:placeholder-shown) + label,
+.floating-label-group textarea:focus + label,
+.floating-label-group textarea:not(:placeholder-shown) + label {
+  transform: translateY(-1.5rem) scale(0.85);
+  color: #C9A84C;
+}
+
+.floating-label-group label {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  color: #9CA3AF;
 }

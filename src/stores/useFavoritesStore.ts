@@ -4,6 +4,7 @@ interface FavoritesStore {
   favorites: string[]; // unitCodes
   toggleFavorite: (unitCode: string) => void;
   isFavorite: (unitCode: string) => boolean;
+  clearAll: () => void;
 }
 
 export const useFavoritesStore = create<FavoritesStore>((set, get) => ({
@@ -24,4 +25,10 @@ export const useFavoritesStore = create<FavoritesStore>((set, get) => ({
     });
   },
   isFavorite: (unitCode) => get().favorites.includes(unitCode),
+  clearAll: () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('favorites', JSON.stringify([]));
+    }
+    set({ favorites: [] });
+  },
 }));

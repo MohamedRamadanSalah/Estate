@@ -422,12 +422,13 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
       </div>
 
       {/* Lightbox */}
-      <Lightbox
-        images={images}
-        isOpen={lightboxOpen}
-        onClose={() => setLightboxOpen(false)}
-        startIndex={currentImage}
-      />
+      {lightboxOpen && (
+        <Lightbox
+          images={images}
+          initialIndex={currentImage}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 }

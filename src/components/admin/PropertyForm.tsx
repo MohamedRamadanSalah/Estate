@@ -1,7 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import {
+  Upload,
+  X,
+  Loader2,
+  GripVertical,
+  ImageIcon,
+} from 'lucide-react';
 import {
   PROPERTY_TYPES,
   ACCOMMODATION_TYPES,
@@ -140,14 +148,72 @@ export default function PropertyForm({ property }: PropertyFormProps) {
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const fd = new FormData();
-    fd.append('file', file);
-    const res = await fetch('/api/upload', { method: 'POST', body: fd });
-    const data = await res.json();
-    if (data.url) setForm((f) => ({ ...f, images: [...f.images, data.url] }));
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploadingImages(true);
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/upload', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.url) setForm((f) => ({ ...f, images: [...f.images, data.url] }));
+      }
+    } catch {
+      alert('فشل رفع بعض الصور');
+    } finally {
+      setUploadingImages(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => setDragOver(false);
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const files = e.dataTransfer.files;
+    if (!files.length) return;
+    setUploadingImages(true);
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!file.type.startsWith('image/')) continue;
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/upload', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.url) setForm((f) => ({ ...f, images: [...f.images, data.url] }));
+      }
+    } catch {
+      alert('فشل رفع بعض الصور');
+    } finally {
+      setUploadingImages(false);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setForm((f) => ({ ...f, images: f.images.filter((_, j) => j !== index) }));
+  };
+
+  const moveImage = (from: number, to: number) => {
+    setForm((f) => {
+      const images = [...f.images];
+      const [moved] = images.splice(from, 1);
+      images.splice(to, 0, moved);
+      return { ...f, images };
+    });
+  };
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
 
   const generateAI = async () => {
     const desc = `عقار ${form.propertyType} في ${form.projectName} بمنطقة ${form.district}. المساحة ${form.totalArea} م². ${form.bedroomsCount} غرف نوم و${form.bathroomsCount} حمام. ${form.hasSwimmingPool ? 'يوجد حمام سباحة.' : ''} ${form.hasGarden ? 'حديقة خاصة.' : ''} السعر ${form.totalPrice} جنيه مصري. فرصة استثمارية مميزة.`;
@@ -463,10 +529,10 @@ export default function PropertyForm({ property }: PropertyFormProps) {
 
       <section className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-xl font-bold text-navy mb-4">الوصف والوسائط</h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="block text-sm">الوصف التسويقي *</label>
+              <label className="block text-sm font-medium">الوصف التسويقي *</label>
               <button type="button" onClick={generateAI} className="text-sm text-gold hover:underline">
                 توليد بالذكاء الاصطناعي
               </button>
@@ -479,29 +545,123 @@ export default function PropertyForm({ property }: PropertyFormProps) {
               className="w-full px-4 py-2 rounded-lg border"
             />
           </div>
+
+          {/* Image Upload Section */}
           <div>
-            <label className="block text-sm mb-1">الصور (1-20)</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="w-full"
-            />
-            <div className="flex flex-wrap gap-2 mt-2">
-              {form.images.map((url, i) => (
-                <div key={i} className="relative w-20 h-20">
-                  <img src={url} alt="" className="w-full h-full object-cover rounded" />
-                  <button
-                    type="button"
-                    onClick={() => setForm((f) => ({ ...f, images: f.images.filter((_, j) => j !== i) }))}
-                    className="absolute -top-1 -left-1 w-5 h-5 bg-red-500 text-white rounded text-xs"
-                  >
-                    ×
-                  </button>
+            <label className="block text-sm font-medium mb-2">الصور (1-20)</label>
+
+            {/* Drop Zone */}
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`relative border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 ${
+                dragOver
+                  ? 'border-gold bg-gold/5 scale-[1.01]'
+                  : 'border-gray-300 hover:border-gold/50 hover:bg-gray-50'
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              {uploadingImages ? (
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="w-10 h-10 text-gold animate-spin" />
+                  <p className="text-sm text-gray-500">جاري رفع الصور...</p>
                 </div>
-              ))}
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center">
+                    <Upload className="w-7 h-7 text-gold" />
+                  </div>
+                  <p className="text-sm font-medium text-navy">اسحب الصور هنا أو اضغط للاختيار</p>
+                  <p className="text-xs text-gray-400">PNG, JPG, WEBP — حتى 20 صورة</p>
+                </div>
+              )}
             </div>
+
+            {/* Image Gallery */}
+            {form.images.length > 0 && (
+              <div className="mt-4">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm text-gray-500">
+                    <span className="font-bold text-navy">{form.images.length}</span> صورة مرفوعة
+                  </p>
+                  <p className="text-xs text-gray-400">الصورة الأولى هي الصورة الرئيسية</p>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {form.images.map((url, i) => (
+                    <div
+                      key={i}
+                      className={`group relative aspect-square rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                        i === 0 ? 'border-gold shadow-lg ring-2 ring-gold/20' : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <Image
+                        src={url}
+                        alt={`صورة ${i + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 50vw, 20vw"
+                        unoptimized
+                      />
+
+                      {/* Main image badge */}
+                      {i === 0 && (
+                        <div className="absolute top-2 right-2 bg-gold text-navy text-[10px] font-bold px-2 py-0.5 rounded-md shadow">
+                          الرئيسية
+                        </div>
+                      )}
+
+                      {/* Hover overlay with actions */}
+                      <div className="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+                        {/* Move buttons */}
+                        {i > 0 && (
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); moveImage(i, i - 1); }}
+                            className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center hover:bg-white transition-colors"
+                            title="تقديم"
+                          >
+                            <GripVertical className="w-4 h-4 text-navy" />
+                          </button>
+                        )}
+                        {/* Delete button */}
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); removeImage(i); }}
+                          className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center hover:bg-red-600 transition-colors shadow"
+                          title="حذف"
+                        >
+                          <X className="w-4 h-4 text-white" />
+                        </button>
+                      </div>
+
+                      {/* Image number */}
+                      <div className="absolute bottom-2 left-2 bg-navy/70 text-white text-[10px] font-bold w-5 h-5 rounded flex items-center justify-center">
+                        {i + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No images placeholder */}
+            {form.images.length === 0 && !uploadingImages && (
+              <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
+                <ImageIcon className="w-4 h-4" />
+                <span>لم يتم رفع أي صور بعد</span>
+              </div>
+            )}
           </div>
+
           <div>
             <label className="block text-sm mb-1">رابط الفيديو</label>
             <input
@@ -527,9 +687,14 @@ export default function PropertyForm({ property }: PropertyFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="px-8 py-3 bg-gold text-navy font-semibold rounded-lg hover:bg-copper disabled:opacity-50"
+        className="px-10 py-3.5 bg-gold text-navy font-bold rounded-xl hover:bg-copper disabled:opacity-50 shadow-lg hover:shadow-xl transition-all duration-200 text-base"
       >
-        {loading ? 'جاري الحفظ...' : property ? 'تحديث' : 'حفظ الوحدة'}
+        {loading ? (
+          <span className="flex items-center gap-2">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            جاري الحفظ...
+          </span>
+        ) : property ? 'تحديث الوحدة' : 'حفظ الوحدة'}
       </button>
     </form>
   );

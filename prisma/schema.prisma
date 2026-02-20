@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Governorate {
+  id        Int      @id @default(autoincrement())
+  nameAr    String   @map("name_ar")
+  nameEn    String?  @map("name_en")
+  slug      String   @unique
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  cities    City[]
+  properties Property[]
+  @@map("governorates")
+}
+
+model City {
+  id             Int      @id @default(autoincrement())
+  nameAr         String   @map("name_ar")
+  nameEn         String?  @map("name_en")
+  slug           String
+  governorateId  Int      @map("governorate_id")
+  sortOrder      Int      @default(0) @map("sort_order")
+  isActive       Boolean  @default(true) @map("is_active")
+  governorate    Governorate @relation(fields: [governorateId], references: [id], onDelete: Cascade)
+  properties     Property[]
+  @@unique([governorateId, slug])
+  @@map("cities")
+}
+
+model Developer {
+  id          Int      @id @default(autoincrement())
+  nameAr      String   @map("name_ar")
+  slug        String   @unique
+  description String?  @db.Text
+  logoUrl     String?  @map("logo_url")
+  website     String?
+  phone       String?
+  properties  Property[]
+  @@map("developers")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  nameAr    String   @map("name_ar")
+  createdAt DateTime @default(now()) @map("created_at")
+  @@map("admins")
+}
+
+model Property {
+  id                    Int       @id @default(autoincrement())
+  unitCode              String    @unique @map("unit_code")
+  governorateId         Int       @map("governorate_id")
+  cityId                Int       @map("city_id")
+  district              String
+  locationLat           Float?    @map("location_lat")
+  locationLng           Float?    @map("location_lng")
+  projectName           String    @map("project_name")
+  developerId           Int       @map("developer_id")
+  propertyType          String    @map("property_type")
+  accommodationType     String    @map("accommodation_type")
+  totalArea             Decimal   @map("total_area") @db.Decimal(10, 2)
+  pricePerSqm           Decimal   @map("price_per_sqm") @db.Decimal(12, 2)
+  totalPrice            Decimal   @map("total_price") @db.Decimal(14, 2)
+  paymentMethod         String    @map("payment_method")
+  installmentDetails    String?   @map("installment_details") @db.Text
+  bedroomsCount         Int       @map("bedrooms_count")
+  bathroomsCount        Int       @map("bathrooms_count")
+  livingRoomsCount      Int?      @map("living_rooms_count")
+  floorNumber           Int?      @map("floor_number")
+  totalFloors           Int?      @map("total_floors")
+  hasSwimmingPool       Boolean   @default(false) @map("has_swimming_pool")
+  hasGarden             Boolean   @default(false) @map("has_garden")
+  isFurnished           String    @map("is_furnished")
+  hasAirConditioning    Boolean   @default(false) @map("has_air_conditioning")
+  finishingStatus      String?   @map("finishing_status")
+  status                String
+  marketingDescription  String    @map("marketing_description") @db.Text
+  images                String[]  @default([])
+  videoUrl              String?   @map("video_url")
+  extraFeatures         String[]  @default([]) @map("extra_features")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  governorate           Governorate @relation(fields: [governorateId], references: [id], onDelete: Cascade)
+  city                  City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  developer             Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  @@index([governorateId, cityId])
+  @@index([status])
+  @@index([propertyType])
+  @@map("properties")
+}

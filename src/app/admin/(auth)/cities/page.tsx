@@ -10,8 +10,11 @@ export default async function AdminCitiesPage() {
   });
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-navy mb-8">إدارة المدن</h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-navy">إدارة المدن</h1>
+        <p className="text-gray-400 mt-1">إضافة وإدارة المدن في كل محافظة</p>
+      </div>
       <CitiesManager governorates={governorates} />
     </div>
   );

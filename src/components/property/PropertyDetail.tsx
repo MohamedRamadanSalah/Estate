@@ -76,9 +76,9 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
   return (
     <div className="max-w-7xl mx-auto px-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
+        <div className="order-2 lg:order-1 lg:col-span-2">
           <div className="rounded-xl overflow-hidden bg-gray-200 mb-4">
-            <div className="relative h-80 md:h-96">
+            <div className="relative h-64 sm:h-80 md:h-96">
               <Image
                 src={images[currentImage]}
                 alt={property.projectName}
@@ -113,13 +113,13 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
             </div>
           )}
 
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-navy mb-4">الوصف التسويقي</h2>
+          <div className="mt-6 md:mt-8">
+            <h2 className="text-xl md:text-2xl font-bold text-navy mb-3 md:mb-4">الوصف التسويقي</h2>
             <p className="text-gray leading-relaxed whitespace-pre-line">{property.marketingDescription}</p>
           </div>
 
           {property.extraFeatures && property.extraFeatures.length > 0 && (
-            <div className="mt-8">
+            <div className="mt-6 md:mt-8">
               <h2 className="text-xl font-bold text-navy mb-3">مميزات إضافية</h2>
               <div className="flex flex-wrap gap-2">
                 {property.extraFeatures.map((f, i) => (
@@ -132,24 +132,24 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
           )}
 
           {property.locationLat && property.locationLng && (
-            <div className="mt-8">
+            <div className="mt-6 md:mt-8">
               <h2 className="text-xl font-bold text-navy mb-3">الموقع على الخريطة</h2>
               <MapView lat={property.locationLat} lng={property.locationLng} />
             </div>
           )}
 
           {property.paymentMethod?.includes('تقسيط') && (
-            <div className="mt-8">
+            <div className="mt-6 md:mt-8">
               <InstallmentCalculator totalPrice={totalPrice} />
             </div>
           )}
         </div>
 
-        <div>
-          <div className="sticky top-24 bg-white rounded-xl shadow-lg p-6">
-            <h1 className="text-2xl font-bold text-navy mb-2">{property.projectName}</h1>
+        <div className="order-1 lg:order-2">
+          <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 lg:sticky lg:top-24">
+            <h1 className="text-xl md:text-2xl font-bold text-navy mb-2">{property.projectName}</h1>
             <p className="text-gray">{property.governorate?.nameAr} - {property.city?.nameAr}</p>
-            <p className="text-2xl font-bold text-gold mt-4">
+            <p className="text-xl md:text-2xl font-bold text-gold mt-4">
               {totalPrice.toLocaleString('ar-EG')} جنيه مصري
             </p>
             <p className="text-sm text-gray mt-1">
@@ -159,11 +159,11 @@ export default function PropertyDetail({ property }: PropertyDetailProps) {
               <p className="text-sm text-gray mt-2">{property.installmentDetails}</p>
             )}
             <WhatsAppButton unitCode={property.unitCode} projectName={property.projectName} />
-            <div className="mt-6 border-t pt-6">
+            <div className="mt-5 md:mt-6 border-t pt-5 md:pt-6">
               <h3 className="font-semibold text-navy mb-3">مواصفات الوحدة</h3>
               <dl className="space-y-2 text-sm">
                 {specs.map((s) => (
-                  <div key={s.label} className="flex justify-between">
+                  <div key={s.label} className="flex justify-between gap-3">
                     <dt className="text-gray">{s.label}</dt>
                     <dd className="font-medium">{String(s.value)}</dd>
                   </div>

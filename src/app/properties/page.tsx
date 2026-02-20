@@ -9,10 +9,10 @@ export default function PropertiesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 py-8">
+      <main className="flex-1 py-5 md:py-8">
         <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-3xl font-bold text-navy mb-6">كل الوحدات العقارية</h1>
-          <div className="flex flex-col lg:flex-row gap-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-navy mb-4 md:mb-6">كل الوحدات العقارية</h1>
+          <div className="flex flex-col lg:flex-row gap-5 md:gap-8">
             <aside className="lg:w-72 shrink-0">
               <PropertiesFilter />
             </aside>

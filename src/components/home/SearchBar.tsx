@@ -39,19 +39,19 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="bg-white rounded-xl shadow-xl p-4 md:p-6 max-w-4xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <form onSubmit={handleSearch} className="bg-white rounded-xl shadow-xl p-3 sm:p-4 md:p-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="كود الوحدة أو المنطقة..."
-          className="px-4 py-3 rounded-lg border border-gray-200 text-navy"
+          className="w-full px-3 md:px-4 py-3 rounded-lg border border-gray-200 text-navy text-sm md:text-base"
         />
         <select
           value={governorate}
           onChange={(e) => setGovernorate(e.target.value)}
-          className="px-4 py-3 rounded-lg border border-gray-200 text-navy"
+          className="w-full px-3 md:px-4 py-3 rounded-lg border border-gray-200 text-navy text-sm md:text-base"
         >
           <option value="">المحافظة</option>
           {governorates.map((g) => (
@@ -61,7 +61,7 @@ export default function SearchBar() {
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="px-4 py-3 rounded-lg border border-gray-200 text-navy"
+          className="w-full px-3 md:px-4 py-3 rounded-lg border border-gray-200 text-navy text-sm md:text-base"
         >
           <option value="">نوع العقار</option>
           <option value="شقة">شقة</option>
@@ -74,19 +74,19 @@ export default function SearchBar() {
           value={minPrice}
           onChange={(e) => setMinPrice(e.target.value)}
           placeholder="أقل سعر (EGP)"
-          className="px-4 py-3 rounded-lg border border-gray-200 text-navy"
+          className="w-full px-3 md:px-4 py-3 rounded-lg border border-gray-200 text-navy text-sm md:text-base"
         />
         <input
           type="number"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
           placeholder="أعلى سعر (EGP)"
-          className="px-4 py-3 rounded-lg border border-gray-200 text-navy"
+          className="w-full px-3 md:px-4 py-3 rounded-lg border border-gray-200 text-navy text-sm md:text-base"
         />
       </div>
       <button
         type="submit"
-        className="mt-4 w-full md:w-auto px-8 py-3 bg-gold text-navy font-semibold rounded-lg hover:bg-copper transition-colors"
+        className="mt-3 md:mt-4 w-full md:w-auto px-8 py-3 bg-gold text-navy font-semibold rounded-lg hover:bg-copper transition-colors"
       >
         بحث
       </button>

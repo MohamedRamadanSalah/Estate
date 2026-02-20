@@ -45,10 +45,10 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           )}
         </div>
         <div className="p-4">
-          <p className="text-sm text-gray">{property.governorate.nameAr} - {property.city.nameAr}</p>
-          <h3 className="font-semibold text-navy mt-1">{property.projectName}</h3>
-          <p className="text-gold font-bold mt-2">{price} جنيه مصري</p>
-          <div className="flex gap-4 mt-2 text-sm text-gray">
+          <p className="text-xs sm:text-sm text-gray">{property.governorate.nameAr} - {property.city.nameAr}</p>
+          <h3 className="font-semibold text-navy mt-1 text-sm sm:text-base line-clamp-2">{property.projectName}</h3>
+          <p className="text-gold font-bold mt-2 text-sm sm:text-base">{price} جنيه مصري</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs sm:text-sm text-gray">
             <span>{property.bedroomsCount} غرف</span>
             <span>{property.bathroomsCount} حمام</span>
             <span>{area} م²</span>

@@ -61,27 +61,27 @@ export default function PropertiesList({ initialGovernorate, searchQuery }: Prop
 
   return (
     <div>
-      <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-5 md:mb-6">
         <select
           value={currentSort}
           onChange={(e) => handleSort(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-200"
+          className="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-gray-200 text-sm"
         >
           <option value="newest">الأحدث</option>
           <option value="price_asc">السعر تصاعدياً</option>
           <option value="price_desc">السعر تنازلياً</option>
           <option value="area">المساحة</option>
         </select>
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full sm:w-auto">
           <button
             onClick={() => setViewMode('grid')}
-            className={`px-3 py-1 rounded ${viewMode === 'grid' ? 'bg-gold/20 text-gold' : 'border'}`}
+            className={`flex-1 sm:flex-none px-3 py-2 rounded text-sm ${viewMode === 'grid' ? 'bg-gold/20 text-gold' : 'border'}`}
           >
             شبكة
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`px-3 py-1 rounded ${viewMode === 'list' ? 'bg-gold/20 text-gold' : 'border'}`}
+            className={`flex-1 sm:flex-none px-3 py-2 rounded text-sm ${viewMode === 'list' ? 'bg-gold/20 text-gold' : 'border'}`}
           >
             قائمة
           </button>
@@ -104,21 +104,21 @@ export default function PropertiesList({ initialGovernorate, searchQuery }: Prop
             ))}
           </div>
           {totalPages > 1 && (
-            <div className="flex justify-center gap-2 mt-8">
+            <div className="flex justify-center items-center gap-2 mt-6 md:mt-8 flex-wrap">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="px-4 py-2 rounded border disabled:opacity-50"
+                className="px-4 py-2 rounded border text-sm disabled:opacity-50"
               >
                 السابق
               </button>
-              <span className="px-4 py-2">
+              <span className="px-3 py-2 text-sm">
                 {page} / {totalPages}
               </span>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page >= totalPages}
-                className="px-4 py-2 rounded border disabled:opacity-50"
+                className="px-4 py-2 rounded border text-sm disabled:opacity-50"
               >
                 التالي
               </button>

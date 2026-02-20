@@ -28,10 +28,10 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-navy/95 backdrop-blur-sm border-b border-gold/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16 gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-extrabold text-gold">عقارك</span>
+            <span className="text-xl sm:text-2xl font-extrabold text-gold">عقارك</span>
           </Link>
 
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8">
@@ -64,7 +64,8 @@ export default function Navbar() {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-cream"
+            className="md:hidden p-2 text-cream rounded-lg border border-gold/30"
+            aria-label="فتح القائمة"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {menuOpen ? (
@@ -82,7 +83,7 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden py-4"
+              className="md:hidden py-4 border-t border-gold/20"
             >
               <form onSubmit={handleSearch} className="mb-4">
                 <input
@@ -90,9 +91,9 @@ export default function Navbar() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="ابحث..."
-                  className="w-full px-4 py-2 rounded-lg border border-gold/30 bg-cream/10 text-cream"
+                  className="w-full px-4 py-3 rounded-lg border border-gold/30 bg-cream/10 text-cream placeholder-gray-300"
                 />
-                <button type="submit" className="mt-2 w-full py-2 bg-gold text-navy rounded-lg">
+                <button type="submit" className="mt-2 w-full py-3 bg-gold text-navy rounded-lg font-semibold">
                   بحث
                 </button>
               </form>
@@ -101,7 +102,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block py-2 text-cream"
+                  className="block py-2.5 text-cream/90 hover:text-gold"
                 >
                   {link.label}
                 </Link>

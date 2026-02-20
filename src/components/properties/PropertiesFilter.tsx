@@ -71,7 +71,7 @@ export default function PropertiesFilter({ initialGovernorate, cities: initialCi
   if (loading) return <div className="animate-pulse h-64 bg-gray-200 rounded-xl" />;
 
   return (
-    <form onSubmit={handleApply} className="bg-white rounded-xl shadow-lg p-4 space-y-4">
+    <form onSubmit={handleApply} className="bg-white rounded-xl shadow-lg p-3 sm:p-4 space-y-3.5 sm:space-y-4">
       <h3 className="font-bold text-navy">تصفية النتائج</h3>
       <div>
         <label className="block text-sm text-gray mb-1">المحافظة</label>
@@ -79,7 +79,7 @@ export default function PropertiesFilter({ initialGovernorate, cities: initialCi
           name="governorate"
           defaultValue={governorateParam}
           onChange={(e) => handleGovernorateChange(e.target.value)}
-          className="w-full px-3 py-2 rounded-lg border border-gray-200"
+          className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm"
         >
           <option value="">الكل</option>
           {governorates.map((g) => (
@@ -89,7 +89,7 @@ export default function PropertiesFilter({ initialGovernorate, cities: initialCi
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">المدينة</label>
-        <select name="cityId" defaultValue={cityIdParam} className="w-full px-3 py-2 rounded-lg border border-gray-200">
+        <select name="cityId" defaultValue={cityIdParam} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm">
           <option value="">الكل</option>
           {cities.map((c) => (
             <option key={c.id} value={c.id}>{c.nameAr}</option>
@@ -98,7 +98,7 @@ export default function PropertiesFilter({ initialGovernorate, cities: initialCi
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">نوع العقار</label>
-        <select name="type" defaultValue={searchParams.get('type') || ''} className="w-full px-3 py-2 rounded-lg border border-gray-200">
+        <select name="type" defaultValue={searchParams.get('type') || ''} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm">
           <option value="">الكل</option>
           <option value="شقة">شقة</option>
           <option value="فيلا">فيلا</option>
@@ -110,23 +110,23 @@ export default function PropertiesFilter({ initialGovernorate, cities: initialCi
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">أقل سعر (EGP)</label>
-        <input type="number" name="minPrice" defaultValue={searchParams.get('minPrice') || ''} placeholder="0" className="w-full px-3 py-2 rounded-lg border border-gray-200" />
+        <input type="number" name="minPrice" defaultValue={searchParams.get('minPrice') || ''} placeholder="0" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm" />
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">أعلى سعر (EGP)</label>
-        <input type="number" name="maxPrice" defaultValue={searchParams.get('maxPrice') || ''} placeholder="0" className="w-full px-3 py-2 rounded-lg border border-gray-200" />
+        <input type="number" name="maxPrice" defaultValue={searchParams.get('maxPrice') || ''} placeholder="0" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm" />
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">أقل مساحة (م²)</label>
-        <input type="number" name="minArea" defaultValue={searchParams.get('minArea') || ''} placeholder="0" className="w-full px-3 py-2 rounded-lg border border-gray-200" />
+        <input type="number" name="minArea" defaultValue={searchParams.get('minArea') || ''} placeholder="0" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm" />
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">أعلى مساحة (م²)</label>
-        <input type="number" name="maxArea" defaultValue={searchParams.get('maxArea') || ''} placeholder="0" className="w-full px-3 py-2 rounded-lg border border-gray-200" />
+        <input type="number" name="maxArea" defaultValue={searchParams.get('maxArea') || ''} placeholder="0" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm" />
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">حمام سباحة</label>
-        <select name="hasPool" defaultValue={searchParams.get('hasPool') || ''} className="w-full px-3 py-2 rounded-lg border border-gray-200">
+        <select name="hasPool" defaultValue={searchParams.get('hasPool') || ''} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm">
           <option value="">الكل</option>
           <option value="true">نعم</option>
           <option value="false">لا</option>
@@ -134,13 +134,13 @@ export default function PropertiesFilter({ initialGovernorate, cities: initialCi
       </div>
       <div>
         <label className="block text-sm text-gray mb-1">حديقة خاصة</label>
-        <select name="hasGarden" defaultValue={searchParams.get('hasGarden') || ''} className="w-full px-3 py-2 rounded-lg border border-gray-200">
+        <select name="hasGarden" defaultValue={searchParams.get('hasGarden') || ''} className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm">
           <option value="">الكل</option>
           <option value="true">نعم</option>
           <option value="false">لا</option>
         </select>
       </div>
-      <button type="submit" className="w-full py-2 bg-gold text-navy font-semibold rounded-lg hover:bg-copper">
+      <button type="submit" className="w-full py-2.5 bg-gold text-navy font-semibold rounded-lg hover:bg-copper">
         تطبيق التصفية
       </button>
     </form>

@@ -26,13 +26,13 @@ export default async function DeveloperPage({ params }: { params: Promise<{ slug
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 py-8">
+      <main className="flex-1 py-5 md:py-8">
         <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-3xl font-bold text-navy mb-6">وحدات {developer.nameAr}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-navy mb-4 md:mb-6">وحدات {developer.nameAr}</h1>
           {developer.properties.length === 0 ? (
             <p className="text-gray py-12">لا توجد وحدات لهذا المطور.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {developer.properties.map((p) => (
                 <PropertyCard key={p.id} property={p} />
               ))}

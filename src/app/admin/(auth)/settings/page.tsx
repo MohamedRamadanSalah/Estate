@@ -2,12 +2,12 @@ import { Settings } from 'lucide-react';
 
 export default function AdminSettingsPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-navy">الإعدادات</h1>
-        <p className="text-gray-400 mt-1">إعدادات الموقع العامة</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-navy">الإعدادات</h1>
+        <p className="text-gray-400 text-sm mt-1">إعدادات الموقع العامة</p>
       </div>
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 max-w-2xl">
+      <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 p-5 sm:p-8 max-w-2xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 bg-gold/10 rounded-xl flex items-center justify-center">
             <Settings className="w-5 h-5 text-gold" />

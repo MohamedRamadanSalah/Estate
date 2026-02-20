@@ -221,12 +221,12 @@ export default function PropertyForm({ property }: PropertyFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
+    <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-8 max-w-4xl">
       {property && (
-        <p className="text-gray">كود الوحدة: <span className="font-mono font-bold">{property.unitCode}</span></p>
+        <p className="text-gray text-sm">كود الوحدة: <span className="font-mono font-bold">{property.unitCode}</span></p>
       )}
-      <section className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-navy mb-4">الموقع</h2>
+      <section className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-navy mb-3 sm:mb-4">الموقع</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm mb-1">المحافظة *</label>
@@ -309,8 +309,8 @@ export default function PropertyForm({ property }: PropertyFormProps) {
         </div>
       </section>
 
-      <section className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-navy mb-4">بيانات العقار</h2>
+      <section className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-navy mb-3 sm:mb-4">بيانات العقار</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm mb-1">نوع العقار *</label>
@@ -372,8 +372,8 @@ export default function PropertyForm({ property }: PropertyFormProps) {
         </div>
       </section>
 
-      <section className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-navy mb-4">المساحة والتسعير</h2>
+      <section className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-navy mb-3 sm:mb-4">المساحة والتسعير</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm mb-1">المساحة الكلية (م²) *</label>
@@ -434,8 +434,8 @@ export default function PropertyForm({ property }: PropertyFormProps) {
         </div>
       </section>
 
-      <section className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-navy mb-4">تفاصيل الوحدة</h2>
+      <section className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-navy mb-3 sm:mb-4">تفاصيل الوحدة</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm mb-1">عدد الغرف *</label>
@@ -527,9 +527,9 @@ export default function PropertyForm({ property }: PropertyFormProps) {
         </div>
       </section>
 
-      <section className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-navy mb-4">الوصف والوسائط</h2>
-        <div className="space-y-6">
+      <section className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-navy mb-3 sm:mb-4">الوصف والوسائط</h2>
+        <div className="space-y-4 sm:space-y-6">
           <div>
             <div className="flex justify-between items-center mb-2">
               <label className="block text-sm font-medium">الوصف التسويقي *</label>
@@ -556,7 +556,7 @@ export default function PropertyForm({ property }: PropertyFormProps) {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`relative border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 ${
+              className={`relative border-2 border-dashed rounded-xl sm:rounded-2xl p-5 sm:p-8 text-center cursor-pointer transition-all duration-200 ${
                 dragOver
                   ? 'border-gold bg-gold/5 scale-[1.01]'
                   : 'border-gray-300 hover:border-gold/50 hover:bg-gray-50'
@@ -595,7 +595,7 @@ export default function PropertyForm({ property }: PropertyFormProps) {
                   </p>
                   <p className="text-xs text-gray-400">الصورة الأولى هي الصورة الرئيسية</p>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
                   {form.images.map((url, i) => (
                     <div
                       key={i}
@@ -619,8 +619,8 @@ export default function PropertyForm({ property }: PropertyFormProps) {
                         </div>
                       )}
 
-                      {/* Hover overlay with actions */}
-                      <div className="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+                      {/* Actions overlay - always visible on mobile, hover on desktop */}
+                      <div className="absolute inset-0 bg-navy/60 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-1.5 sm:gap-2">
                         {/* Move buttons */}
                         {i > 0 && (
                           <button
@@ -687,7 +687,7 @@ export default function PropertyForm({ property }: PropertyFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="px-10 py-3.5 bg-gold text-navy font-bold rounded-xl hover:bg-copper disabled:opacity-50 shadow-lg hover:shadow-xl transition-all duration-200 text-base"
+        className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 bg-gold text-navy font-bold rounded-xl hover:bg-copper disabled:opacity-50 shadow-lg hover:shadow-xl transition-all duration-200 text-sm sm:text-base"
       >
         {loading ? (
           <span className="flex items-center gap-2">

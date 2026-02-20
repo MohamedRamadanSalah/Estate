@@ -10,10 +10,10 @@ export default async function AdminDevelopersPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-navy">إدارة المطورين</h1>
-        <p className="text-gray-400 mt-1">{developers.length} مطور عقاري</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-navy">إدارة المطورين</h1>
+        <p className="text-gray-400 text-sm mt-1">{developers.length} مطور عقاري</p>
       </div>
 
       {developers.length === 0 ? (
@@ -23,7 +23,7 @@ export default async function AdminDevelopersPage() {
           <p className="text-gray-400 text-sm mt-1">سيتم إنشاء المطورين تلقائياً عند إضافة وحدات</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {developers.map((d) => (
             <div
               key={d.id}

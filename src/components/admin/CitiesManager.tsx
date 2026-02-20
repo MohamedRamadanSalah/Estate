@@ -77,22 +77,22 @@ export default function CitiesManager({ governorates: initial }: Props) {
   };
 
   return (
-    <div className="space-y-8">
-      <form onSubmit={handleAddCity} className="bg-white rounded-xl shadow-lg p-6 max-w-md">
-        <h2 className="text-lg font-bold text-navy mb-4">إضافة مدينة جديدة</h2>
-        <div className="flex gap-2">
+    <div className="space-y-5 sm:space-y-8">
+      <form onSubmit={handleAddCity} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 max-w-md">
+        <h2 className="text-base sm:text-lg font-bold text-navy mb-3 sm:mb-4">إضافة مدينة جديدة</h2>
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             value={newCity.nameAr}
             onChange={(e) => setNewCity({ ...newCity, nameAr: e.target.value })}
             placeholder="اسم المدينة"
             required
-            className="flex-1 px-4 py-2 rounded-lg border"
+            className="flex-1 px-4 py-2 rounded-lg border text-sm"
           />
           <select
             value={newCity.governorateId}
             onChange={(e) => setNewCity({ ...newCity, governorateId: e.target.value })}
             required
-            className="px-4 py-2 rounded-lg border"
+            className="px-4 py-2 rounded-lg border text-sm"
           >
             <option value="">المحافظة</option>
             {governorates.map((g) => (
@@ -102,22 +102,22 @@ export default function CitiesManager({ governorates: initial }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2 bg-gold text-navy rounded-lg hover:bg-copper"
+            className="px-6 py-2 bg-gold text-navy rounded-lg hover:bg-copper text-sm font-semibold"
           >
             إضافة
           </button>
         </div>
       </form>
 
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {governorates.map((gov) => (
-          <div key={gov.id} className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold text-navy mb-4">{gov.nameAr}</h2>
+          <div key={gov.id} className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-navy mb-3 sm:mb-4">{gov.nameAr}</h2>
             <ul className="space-y-2">
               {gov.cities.map((city) => (
                 <li
                   key={city.id}
-                  className={`flex justify-between items-center py-2 px-4 rounded-lg ${
+                  className={`flex justify-between items-center py-2 px-3 sm:px-4 rounded-lg text-sm ${
                     city.isActive ? 'bg-gray-50' : 'bg-gray-200 opacity-60'
                   }`}
                 >
@@ -125,7 +125,7 @@ export default function CitiesManager({ governorates: initial }: Props) {
                   <button
                     onClick={() => toggleActive(city)}
                     type="button"
-                    className={`px-3 py-1 rounded text-sm ${
+                    className={`px-2.5 sm:px-3 py-1 rounded text-xs sm:text-sm ${
                       city.isActive ? 'bg-success/20 text-success' : 'bg-gray-400 text-white'
                     }`}
                   >

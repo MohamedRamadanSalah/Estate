@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
-import { Building2, CheckCircle, XCircle, Clock, ArrowUpLeft, ImageIcon } from 'lucide-react';
+import { Building2, CheckCircle, XCircle, Clock, ArrowUpLeft, ImageIcon, ChevronLeft } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,36 +40,35 @@ export default async function AdminDashboardPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 lg:space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-navy">لوحة التحكم</h1>
-        <p className="text-gray-400 mt-1">نظرة عامة على وحداتك العقارية</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-navy">لوحة التحكم</h1>
+        <p className="text-gray-400 text-sm mt-1">نظرة عامة على وحداتك العقارية</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         {stats.map((s) => {
           const Icon = s.icon;
           return (
             <Link
               key={s.label}
               href={s.href}
-              className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${s.color} p-6 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 group`}
+              className={`relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br ${s.color} p-4 sm:p-6 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 group`}
             >
               {/* Decorative circle */}
-              <div className="absolute -left-4 -bottom-4 w-24 h-24 rounded-full bg-white/5" />
-              <div className="absolute -left-2 -bottom-2 w-16 h-16 rounded-full bg-white/5" />
+              <div className="absolute -left-4 -bottom-4 w-20 sm:w-24 h-20 sm:h-24 rounded-full bg-white/5" />
 
               <div className="relative z-10 flex items-start justify-between">
-                <div>
-                  <p className="text-white/70 text-sm mb-1">{s.label}</p>
-                  <p className="text-4xl font-bold tracking-tight">
+                <div className="min-w-0">
+                  <p className="text-white/70 text-xs sm:text-sm mb-1 truncate">{s.label}</p>
+                  <p className="text-2xl sm:text-4xl font-bold tracking-tight">
                     {s.value.toLocaleString('ar-EG')}
                   </p>
                 </div>
-                <div className={`w-12 h-12 ${s.iconBg} rounded-xl flex items-center justify-center`}>
-                  <Icon className={`w-6 h-6 ${s.iconColor}`} />
+                <div className={`w-8 h-8 sm:w-12 sm:h-12 ${s.iconBg} rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0`}>
+                  <Icon className={`w-4 h-4 sm:w-6 sm:h-6 ${s.iconColor}`} />
                 </div>
               </div>
             </Link>
@@ -77,84 +76,122 @@ export default async function AdminDashboardPage() {
         })}
       </div>
 
-      {/* Recent Properties Table */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+      {/* Recent Properties */}
+      <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
           <div>
-            <h2 className="text-xl font-bold text-navy">أحدث الوحدات</h2>
-            <p className="text-gray-400 text-sm mt-0.5">آخر ٥ وحدات تمت إضافتها</p>
+            <h2 className="text-lg sm:text-xl font-bold text-navy">أحدث الوحدات</h2>
+            <p className="text-gray-400 text-xs sm:text-sm mt-0.5">آخر ٥ وحدات تمت إضافتها</p>
           </div>
           <Link
             href="/admin/properties"
-            className="flex items-center gap-1 text-sm text-gold hover:text-copper transition-colors font-medium"
+            className="flex items-center gap-1 text-xs sm:text-sm text-gold hover:text-copper transition-colors font-medium"
           >
             عرض الكل
-            <ArrowUpLeft className="w-4 h-4" />
+            <ArrowUpLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
         </div>
 
         {recentProperties.length === 0 ? (
-          <div className="p-12 text-center">
-            <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-400 font-medium">لا توجد وحدات بعد</p>
-            <Link href="/admin/properties/new" className="text-gold hover:underline text-sm mt-1 inline-block">
+          <div className="p-8 sm:p-12 text-center">
+            <Building2 className="w-10 h-10 sm:w-12 sm:h-12 text-gray-300 mx-auto mb-3" />
+            <p className="text-gray-400 font-medium text-sm">لا توجد وحدات بعد</p>
+            <Link href="/admin/properties/new" className="text-gold hover:underline text-xs sm:text-sm mt-1 inline-block">
               أضف وحدة جديدة
             </Link>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50/80">
-                  <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">الصورة</th>
-                  <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">كود الوحدة</th>
-                  <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">المشروع</th>
-                  <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">الموقع</th>
-                  <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">الحالة</th>
-                  <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">إجراءات</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {recentProperties.map((p) => (
-                  <tr key={p.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
-                        {p.images && p.images.length > 0 ? (
-                          <Image
-                            src={p.images[0]}
-                            alt={p.projectName}
-                            width={56}
-                            height={56}
-                            className="w-full h-full object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <ImageIcon className="w-5 h-5 text-gray-300" />
-                          </div>
-                        )}
+          <>
+            {/* Mobile card view */}
+            <div className="lg:hidden divide-y divide-gray-100">
+              {recentProperties.map((p) => (
+                <Link key={p.id} href={`/admin/properties/${p.unitCode}`} className="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors">
+                  <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+                    {p.images && p.images.length > 0 ? (
+                      <Image
+                        src={p.images[0]}
+                        alt={p.projectName}
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <ImageIcon className="w-5 h-5 text-gray-300" />
                       </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="font-mono text-sm bg-navy/5 text-navy px-2 py-1 rounded-lg">{p.unitCode}</span>
-                    </td>
-                    <td className="py-3 px-4 font-medium text-navy">{p.projectName}</td>
-                    <td className="py-3 px-4 text-gray-500 text-sm">{p.governorate?.nameAr} - {p.city?.nameAr}</td>
-                    <td className="py-3 px-4">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${statusBadge(p.status)}`}>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold text-navy text-sm truncate">{p.projectName}</p>
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold flex-shrink-0 ${statusBadge(p.status)}`}>
                         {p.status}
                       </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <Link href={`/admin/properties/${p.unitCode}`} className="text-gold hover:text-copper transition-colors text-sm font-medium">
-                        تعديل
-                      </Link>
-                    </td>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-0.5 truncate">{p.governorate?.nameAr} - {p.city?.nameAr}</p>
+                    <p className="text-[10px] text-gray-400 font-mono mt-0.5">{p.unitCode}</p>
+                  </div>
+                  <ChevronLeft className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                </Link>
+              ))}
+            </div>
+
+            {/* Desktop table view */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-50/80">
+                    <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">الصورة</th>
+                    <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">كود الوحدة</th>
+                    <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">المشروع</th>
+                    <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">الموقع</th>
+                    <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">الحالة</th>
+                    <th className="text-right py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">إجراءات</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {recentProperties.map((p) => (
+                    <tr key={p.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+                          {p.images && p.images.length > 0 ? (
+                            <Image
+                              src={p.images[0]}
+                              alt={p.projectName}
+                              width={56}
+                              height={56}
+                              className="w-full h-full object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <ImageIcon className="w-5 h-5 text-gray-300" />
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="font-mono text-sm bg-navy/5 text-navy px-2 py-1 rounded-lg">{p.unitCode}</span>
+                      </td>
+                      <td className="py-3 px-4 font-medium text-navy">{p.projectName}</td>
+                      <td className="py-3 px-4 text-gray-500 text-sm">{p.governorate?.nameAr} - {p.city?.nameAr}</td>
+                      <td className="py-3 px-4">
+                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${statusBadge(p.status)}`}>
+                          {p.status}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <Link href={`/admin/properties/${p.unitCode}`} className="text-gold hover:text-copper transition-colors text-sm font-medium">
+                          تعديل
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>

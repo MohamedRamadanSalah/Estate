@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   Building2,
@@ -11,11 +12,29 @@ import {
   Settings,
   LogOut,
   ChevronLeft,
+  Menu,
+  X,
 } from 'lucide-react';
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
 
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' });
@@ -35,23 +54,30 @@ export default function AdminSidebar() {
   const isActive = (link: { href: string }) =>
     pathname === link.href || pathname.startsWith(link.href + '/');
 
-  return (
-    <aside className="w-72 bg-gradient-to-b from-navy to-navy-800 text-cream flex flex-col shadow-2xl border-l border-gold/10">
+  const sidebarContent = (
+    <>
       {/* Logo / Brand */}
-      <div className="p-6 border-b border-white/10">
+      <div className="p-5 lg:p-6 border-b border-white/10 flex items-center justify-between">
         <Link href="/admin/dashboard" className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gold/20 rounded-xl flex items-center justify-center">
-            <Building2 className="w-5 h-5 text-gold" />
+          <div className="w-9 h-9 lg:w-10 lg:h-10 bg-gold/20 rounded-xl flex items-center justify-center">
+            <Building2 className="w-4 h-4 lg:w-5 lg:h-5 text-gold" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-gold">عقارك</h1>
+            <h1 className="text-base lg:text-lg font-bold text-gold">عقارك</h1>
             <p className="text-[10px] text-cream/50 -mt-0.5">لوحة التحكم</p>
           </div>
         </Link>
+        {/* Close button - mobile only */}
+        <button
+          onClick={() => setOpen(false)}
+          className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg text-cream/60 hover:text-cream hover:bg-white/10 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         <p className="text-[10px] uppercase text-cream/30 font-semibold tracking-wider px-4 mb-3">القائمة الرئيسية</p>
         {links.map((link) => {
           const Icon = link.icon;
@@ -84,6 +110,46 @@ export default function AdminSidebar() {
           تسجيل الخروج
         </button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile top bar */}
+      <div className="lg:hidden fixed top-0 right-0 left-0 z-40 bg-navy text-cream flex items-center justify-between px-4 py-3 shadow-lg">
+        <Link href="/admin/dashboard" className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gold/20 rounded-lg flex items-center justify-center">
+            <Building2 className="w-4 h-4 text-gold" />
+          </div>
+          <span className="text-sm font-bold text-gold">عقارك</span>
+        </Link>
+        <button
+          onClick={() => setOpen(true)}
+          className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Mobile backdrop */}
+      {open && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - mobile drawer */}
+      <aside
+        className={`
+          fixed top-0 right-0 bottom-0 z-50 w-72 bg-gradient-to-b from-navy to-navy-800 text-cream flex flex-col shadow-2xl border-l border-gold/10
+          transition-transform duration-300 ease-in-out
+          lg:relative lg:translate-x-0 lg:z-auto
+          ${open ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
+        `}
+      >
+        {sidebarContent}
+      </aside>
+    </>
   );
 }
